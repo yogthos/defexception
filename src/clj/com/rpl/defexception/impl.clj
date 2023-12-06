@@ -1,10 +1,10 @@
 (ns ^:no-doc com.rpl.defexception.impl
   (:require [clojure.string :as string])
-  (:import [clojure.asm MethodVisitor
-            ClassVisitor ClassWriter Opcodes Type]
+  (:import [clojure.asm ClassWriter Opcodes Type]
            [clojure.asm.commons GeneratorAdapter Method]
-           [clojure.lang ExceptionInfo]
-           [com.rpl.defexception IDefException]))
+           [clojure.lang ExceptionInfo]))
+
+(gen-interface :name "com.rpl.defexception.IDefException")
 
 (defn- forward-constructor [^ClassWriter cw ^Type t ^Method constr]
   (doto (GeneratorAdapter. Opcodes/ACC_PUBLIC constr nil nil cw)
@@ -74,7 +74,7 @@
             internal-name
             nil
             (.getInternalName ex-info-type)
-            (into-array String [(Type/getInternalName IDefException)]))
+            (into-array String [(Type/getInternalName com.rpl.defexception.IDefException)]))
     (forward-constructor
       cw
       ex-info-type
